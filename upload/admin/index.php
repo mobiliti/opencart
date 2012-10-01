@@ -106,6 +106,18 @@ $registry->set('cache', $cache);
 $session = new Session();
 $registry->set('session', $session); 
 
+//Protection admin
+if (empty($session->data['SecureAuthentication'])) {
+        if((preg_match("/admin\/*index.?\.php$/i", $_SERVER['SCRIPT_NAME']))) {
+                if($_SERVER['QUERY_STRING'] != 'Your PASS' ) {  ///====================> Pass
+                        header('Location: ../index.php');
+                        exit;
+                }  else {
+           $session->data['SecureAuthentication'] = '1';
+                }
+        }
+}
+
 // Language
 $languages = array();
 
